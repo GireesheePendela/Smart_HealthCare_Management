@@ -8,7 +8,6 @@ from api import views
 router=routers.DefaultRouter()
 
 router.register(r'api', views.DiseaseViewSet)
-#router.register(r'auth', views.UserViewSet)
 
 urlpatterns=[
     path(r'api/', include(router.urls)),

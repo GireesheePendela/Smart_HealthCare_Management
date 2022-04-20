@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class Disease(models.Model):
     value_1 = models.CharField(max_length = 50)
     value_2 = models.CharField(max_length = 50)

@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-# from sklearn.model_selection import train_test_split
-# from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -18,20 +16,14 @@ def print_score(clf, X_train, y_train, X_test, y_test, train=True):
         clf_report = pd.DataFrame(classification_report(y_train, pred, output_dict=True))
         print("Train Result:\n================================================")
         print(f"Accuracy Score: {accuracy_score(y_train, pred) * 100:.2f}%")
-        # print("_______________________________________________")
-        # print(f"CLASSIFICATION REPORT:\n{clf_report}")
-        # print("_______________________________________________")
-        # print(f"Confusion Matrix: \n {confusion_matrix(y_train, pred)}\n")
+        
         
     elif train==False:
         pred = clf.predict(X_test)
         clf_report = pd.DataFrame(classification_report(y_test, pred, output_dict=True))
         print("Test Result:\n================================================")        
         print(f"Accuracy Score: {accuracy_score(y_test, pred) * 100:.2f}%")
-        # print("_______________________________________________")
-        # print(f"CLASSIFICATION REPORT:\n{clf_report}")
-        # print("_______________________________________________")
-        # print(f"Confusion Matrix: \n {confusion_matrix(y_test, pred)}\n")
+       
 
 def pre_processing(df):
     
@@ -52,7 +44,6 @@ def pre_processing(df):
     #6th value
     df6 = df['value_6']
     df6 = df6.values.tolist()
-    # print(df1,df2,df3,df4,df5,df6)
 
     #value_1 assign zero or one
     if 'receiving_blood_transfusion' in df1:
@@ -240,7 +231,7 @@ def pre_processing(df):
         muscle_wasting = 1
     else:
         muscle_wasting = 0
-    
+
         #value_6 assign zero or one
     if 'vomiting' in df6:
         vomiting = 1
@@ -284,8 +275,6 @@ def pre_processing(df):
         muscle_pain = 1
     else:
         muscle_pain = 0
-    # convert input into dataframe
-    #value_1
     data_dict = {}
     data_dict['receiving_blood_transfusion'] = receiving_blood_transfusion
     data_dict['red_sore_around_nose'] = red_sore_around_nose
@@ -295,7 +284,6 @@ def pre_processing(df):
     data_dict['blackheads'] = blackheads
     data_dict['shivering'] = shivering
     data_dict['dizziness'] = dizziness
-    #value_2
     data_dict['back_pain'] = back_pain
     data_dict['unsteadiness'] = unsteadiness
     data_dict['yellow_crust_ooze'] = yellow_crust_ooze
@@ -304,7 +292,6 @@ def pre_processing(df):
     data_dict['chills'] = chills
     data_dict['ulcers_on_tongue'] = ulcers_on_tongue
     data_dict['stomach_bleeding'] = stomach_bleeding
-    #value_3
     data_dict['lack_of_concentration'] = lack_of_concentration
     data_dict['coma'] = coma 
     data_dict['neck_pain'] = neck_pain
@@ -313,7 +300,6 @@ def pre_processing(df):
     data_dict['receiving_unsterile_injections'] = receiving_unsterile_injections
     data_dict['headache'] = headache
     data_dict['family_history'] = family_history
-    #value_4
     data_dict['fast_heart_rate'] = fast_heart_rate
     data_dict['pain_behind_the_eyes'] = pain_behind_the_eyes
     data_dict['sweating'] = sweating
@@ -322,7 +308,6 @@ def pre_processing(df):
     data_dict['sunken_eyes'] = sunken_eyes
     data_dict['dischromic_patches'] = dischromic_patches  
     data_dict['nausea'] = nausea
-    #value_5
     data_dict['dehydration'] = dehydration
     data_dict['loss_of_appetite'] = loss_of_appetite
     data_dict['abdominal_pain'] = abdominal_pain
@@ -331,7 +316,6 @@ def pre_processing(df):
     data_dict['altered_sensorium'] = altered_sensorium
     data_dict['chest_pain'] = chest_pain
     data_dict['muscle_wasting'] = muscle_wasting
-    #value_6
     data_dict['vomiting'] = vomiting
     data_dict['mild_fever'] = mild_fever
     data_dict['high_fever'] = high_fever
@@ -342,33 +326,21 @@ def pre_processing(df):
     data_dict['yellowing_of_eyes'] = yellowing_of_eyes
     data_dict['joint_pain'] = joint_pain
     data_dict['muscle_pain'] = muscle_pain
-    # print(data_dict)
-
     df=pd.DataFrame(data_dict,index=[0])
     return df
   
 def training():
     data = pd.read_csv("datasets/Training.csv")
-    # Import train_test_split function
     from sklearn.model_selection import train_test_split
 
     X, y = data.iloc[:,:-1], data.iloc[:,-1]
-
-    # Split dataset into training set and test set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) # 70% training and 30% test
-    #Import Random Forest Model
     from sklearn.ensemble import RandomForestClassifier
-
-    #Create a Gaussian Classifier
     clf=RandomForestClassifier(n_estimators=100)
-
-    #Train the model using the training sets y_pred=clf.predict(X_test)
     clf.fit(X_train,y_train)
 
     y_pred=clf.predict(X_test)
-    #Import scikit-learn metrics module for accuracy calculation
     from sklearn import metrics
-    # Model Accuracy, how often is the classifier correct?
     print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
 
@@ -422,60 +394,22 @@ def training():
         'fatigue', 
         'joint_pain',
        'muscle_pain']], data.iloc[:,-1]
-
-    # Split dataset into training set and test set
     
-
     X_train, X_test, y_train, y_test = train_test_split(X_reduced, y, test_size=0.3, random_state=42)
-    # X_train, X_test, y_train, y_test = train_test_split(X_reduced, y, test_size=0.3) # 70% training and 30% test
-
-    #Create a Gaussian Classifier
-
     clf2=RandomForestClassifier(n_estimators=100)
-
-    #Train the model using the training sets y_pred=clf.predict(X_test)
     clf2.fit(X_train,y_train)
 
     y_pred=clf2.predict(X_test)
-
-    # Model Accuracy, how often is the classifier correct?
     
     print(print_score(clf2, X_train, y_train, X_test, y_test, train=True))
     print(print_score(clf2, X_train, y_train, X_test, y_test, train=False))
 
-    
-
-    # df=pd.read_csv("dataset.csv")
-    # df=pre_processing(df)
-    # y=df[["Disease"]]
-    # df.drop("Disease", axis="columns", inplace=True)
-    # x=df
-    # # print("#"*50)
-    # # print(x)
-
     dummyRow=pd.DataFrame(np.zeros(len(X_reduced.columns)).reshape(1,len(X_reduced.columns)), columns=X_reduced.columns)
     dummyRow.to_csv('datasets/dummyRowDisease.csv', index=False)
-    # model=RandomForestClassifier(random_state=2)
-    # # model=XGBClassifier(max_depth=2,min_child_weight=3, gamma=0,subsample=0.86, reg_alpha=0, n_estimators=125)
-    # x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2, random_state=5)
-    # model.fit(x,y)
-    # print("#"*50)
-    # print(model)
-    # print("#"*50)
-    # print(model.score(x_test,y_test))
+ 
     pkl_filename="datasets/pickle_model_disease.pkl"
     with open(pkl_filename,'wb') as file:
         pickle.dump(clf2,file)
-        # print(pkl_filename)
-    # yp=model.predict(x_test)
-    # print("Survived", sum(yp!=0)) 
-    # print("not Survived ", sum(yp==0))
-    # accuracy_score(y_test,yp)
-    # cm=confusion_matrix(y_test, yp)
-    # #import seaborn as sn
-    # #sn.heatmap(cm,annot=True)
-    # print(cm)
-
 
 def pred(ob):
     d1=ob.to_dict()
@@ -507,6 +441,3 @@ def pred(ob):
 
 if __name__=="__main__":
     training()#df
-
-
-

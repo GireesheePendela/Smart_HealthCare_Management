@@ -2,7 +2,6 @@ from django.db import models
 from doctor.models import DoctorInfo
 from patient.models import *
 
-# Create your models here.
 
 
 class AppointmentDetails(models.Model):
